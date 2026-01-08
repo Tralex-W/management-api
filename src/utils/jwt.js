@@ -4,7 +4,7 @@ import logger from "../config/logger.js";
 const JWT_SECRET = process.env.JWT_SECRET || "secret-key";
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "1d";
 
-export const jwttoken = {
+export const JWTTOKEN = {
   sign: (payload) => {
     try {
       return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
