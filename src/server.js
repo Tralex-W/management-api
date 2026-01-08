@@ -1,6 +1,5 @@
-import express from "express";
+import APP from "./app.js";
 
-const APP = express();
 const PORT = process.env.PORT || 3000;
 
 APP.listen(PORT, () => {
