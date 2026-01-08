@@ -1,8 +1,8 @@
 import LOGGER from "../config/logger.js";
-import { FORMAT_VALIDATION_ERROR } from "../utils/formats";
-import { SIGNUP_SCHEMA } from "../validations/auth.validation";
+import { FORMAT_VALIDATION_ERROR } from "../utils/formats.js";
+import { SIGNUP_SCHEMA } from "../validations/auth.validation.js";
 
-export const SINGUP = async (req, res, next) => {
+export const SIGNUP = async (req, res, next) => {
   try {
     //check for schema match
     const validation_result = SIGNUP_SCHEMA.safeParse(req.body);

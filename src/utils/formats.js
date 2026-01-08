@@ -1,6 +1,6 @@
 //represent errors in a single string
 
-export const FORMAT_VALIDATION_ERRORS = (error) => {
+export const FORMAT_VALIDATION_ERROR = (error) => {
   if (!error || !error.issues) return "Validion failed";
 
   if (Array.isArray(error.issues)) {
