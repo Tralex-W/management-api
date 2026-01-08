@@ -12,6 +12,7 @@ const APP = express();
 APP.use(helmet());
 APP.use(cors());
 APP.use(cookieParser());
+APP.use(express.json());
 APP.use(express.urlencoded({ extended: true }));
 APP.use(
   morgan("combined", { stream: { write: (message) => LOGGER.info(message) } }),
