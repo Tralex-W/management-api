@@ -23,12 +23,11 @@ APP.use("/api/auth", authRoutes);
 
 //endpoints
 APP.get("/", (req, res) => {
-  LOGGER.info("TEST LOGGER");
-  res.status(200).send("TEST");
+  res.status(200).json({ message: "Nothing to see here" });
 });
 
 APP.get("/api", (req, res) => {
-  res.status(200).json({ message: "API TEST" });
+  res.status(200).json({ message: "Nothing to see here" });
 });
 
 APP.get("/health", (req, res) => {
