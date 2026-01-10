@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import { DB } from "../config/database.js";
 import { USERS } from "../models/user.model.js";
 import { eq } from "drizzle-orm";
-import { JWTTOKEN } from "../utils/jwt.js";
 
 export const HASHPASSWORD = async (password) => {
   try {
