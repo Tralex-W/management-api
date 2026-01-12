@@ -120,7 +120,11 @@ export const DELETE_USER = async (req, res, next) => {
       return;
     }
 
-    return await DELETE_USER_BY_ID(req.params.id);
+    await DELETE_USER_BY_ID(req.params.id);
+
+    res.status(204).json({
+      message: "User deleted successfully",
+    });
   } catch (error) {
     if (error.message === "User not found") {
       LOGGER.error("User not found");
@@ -155,7 +159,11 @@ export const UPDATE_USER = async (req, res, next) => {
       return;
     }
 
-    return await UPDATE_USER_BY_ID(req.params.id, req.body);
+    await UPDATE_USER_BY_ID(req.params.id, req.body);
+
+    res.status(200).json({
+      message: "User updated successfully",
+    });
   } catch (error) {
     if (error.message == "User not found") {
       LOGGER.error("User not found");
