@@ -11,19 +11,15 @@ import { COOKIES } from "../utils/cookies.js";
 export const GET_USERS = async (req, res, next) => {
   try {
     LOGGER.info("Fetching users");
-
-    JWTTOKEN.verify(
-      COOKIES.get(req, "token"),
-      process.env.JWT_SECRET,
-      (err, decoded) => {
-        if (err) {
-          LOGGER.error("Invalid token");
-          res.status(401).json({
-            message: "Invalid token",
-          });
-        }
-      },
-    );
+    const token = COOKIES.get(req, "token") || req.headers.cookie;
+    JWTTOKEN.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) {
+        LOGGER.error("Invalid token");
+        res.status(401).json({
+          message: "Invalid token",
+        });
+      }
+    });
 
     const ALL_USERS = await GET_ALL_USERS();
 
@@ -54,19 +50,15 @@ export const GET_USERS = async (req, res, next) => {
 export const GET_USER = async (req, res, next) => {
   try {
     LOGGER.info("Fetching user by ID");
-
-    JWTTOKEN.verify(
-      COOKIES.get(req, "token"),
-      process.env.JWT_SECRET,
-      (err, decoded) => {
-        if (err) {
-          LOGGER.error("Invalid token");
-          res.status(401).json({
-            message: "Invalid token",
-          });
-        }
-      },
-    );
+    const token = COOKIES.get(req, "token") || req.headers.cookie;
+    JWTTOKEN.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) {
+        LOGGER.error("Invalid token");
+        res.status(401).json({
+          message: "Invalid token",
+        });
+      }
+    });
 
     const USER = await GET_USER_BY_ID(req.params.id);
 
