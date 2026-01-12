@@ -1,16 +1,36 @@
 ## Management API
 
-User authentication API with **sign up**, **sign in**, and **sign out**.  
-Uses **JWT** and **session cookies** for authentication.
+REST API for user management and authentication.
+
+Supports:
+- **Sign up**
+- **Sign in**
+- **Sign out**
+- **Get user / users**
+- **Update user**
+- **Delete user**
+
+Authentication is implemented using **JWT** stored in **HTTP-only session cookies**.
 
 ### Docker
 
-The application can be containerized using the provided scripts:
+Prebuilt Docker image is available on Docker Hub:
 
-- `build-docker.sh` – builds the Docker image  
-- `run-docker.sh` – runs the Docker container
+👉 https://hub.docker.com/repository/docker/erichwr/management-api/general
 
-### Environment Variables
+### Build and runlocally
+```bash
+./build-docker.sh
+./run-docker.sh
+```
+###Example env file:
+PORT=3000
+NODE_ENV=development
+LOG_LEVEL=info
+DATABASE_URL=YOUR_NEON_DATABASE_URL
+JWT_SECRET=YOUR_JWT_SECRET
 
-A `.env` file **must be created** before running the application.  
-It contains all required configuration values such as database credentials and secrets.
+
+
+
+
