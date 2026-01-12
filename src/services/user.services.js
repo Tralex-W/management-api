@@ -87,7 +87,7 @@ export const UPDATE_USER_BY_ID = async (id, data) => {
 export const DELETE_USER_BY_ID = async (id) => {
   try {
     const user = await GET_USER_BY_ID(id);
-    if (!user) {
+    if (!user || user.length === 0) {
       throw new Error("User not found");
     }
 

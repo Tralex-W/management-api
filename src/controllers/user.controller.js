@@ -1,9 +1,12 @@
 import LOGGER from "../config/logger.js";
-import { GET_ALL_USERS, GET_USER_BY_ID } from "../services/user.services.js";
+import {
+  GET_ALL_USERS,
+  GET_USER_BY_ID,
+  DELETE_USER_BY_ID,
+  UPDATE_USER_BY_ID,
+} from "../services/user.services.js";
 import { JWTTOKEN } from "../utils/jwt.js";
 import { COOKIES } from "../utils/cookies.js";
-//! NEED VERIFICATION with JWTTOKE.verify
-//Send Error Http Code in catch block
 
 export const GET_USERS = async (req, res, next) => {
   try {
@@ -30,6 +33,7 @@ export const GET_USERS = async (req, res, next) => {
       res.status(404).json({
         message: "No users found",
       });
+      return;
     }
 
     res.status(200).json({
@@ -37,8 +41,12 @@ export const GET_USERS = async (req, res, next) => {
       users: ALL_USERS,
       count: ALL_USERS.length,
     });
+    return;
   } catch (error) {
     LOGGER.error("Error fetching users:", error);
+    res.status(500).json({
+      message: "Error fetching users",
+    });
     next(error);
   }
 };
@@ -46,8 +54,6 @@ export const GET_USERS = async (req, res, next) => {
 export const GET_USER = async (req, res, next) => {
   try {
     LOGGER.info("Fetching user by ID");
-
-    console.log("req", req);
 
     JWTTOKEN.verify(
       COOKIES.get(req, "token"),
@@ -70,12 +76,14 @@ export const GET_USER = async (req, res, next) => {
       res.status(404).json({
         message: "User not found",
       });
+      return;
     }
 
     res.status(200).json({
       message: "User fetched successfully",
       user: USER,
     });
+    return;
   } catch (error) {
     if (error.message === "User not found") {
       LOGGER.error("User not found");
@@ -84,7 +92,82 @@ export const GET_USER = async (req, res, next) => {
       });
     } else {
       LOGGER.error("Error fetching user:", error);
-      next(error);
+      res.status(500).json({
+        message: "Error fetching user",
+      });
     }
+    next(error);
+  }
+};
+
+export const DELETE_USER = async (req, res, next) => {
+  try {
+    LOGGER.info("Deleting User");
+
+    const token = COOKIES.get(req, "token") || req.headers.cookie;
+    const payload = JWTTOKEN.verify(token, process.env.JWT_SECRET);
+    req.user = {
+      id: payload.id,
+      email: payload.email,
+      role: payload.role,
+    };
+
+    if (req.user.role != "admin") {
+      LOGGER.error("Unauthorized");
+      res.status(403).json({
+        message: "Unauthorized",
+      });
+      return;
+    }
+
+    return await DELETE_USER_BY_ID(req.params.id);
+  } catch (error) {
+    if (error.message === "User not found") {
+      LOGGER.error("User not found");
+      res.status(404).json({
+        message: "User not found",
+      });
+    } else {
+      LOGGER.error("Error deleting user:", error);
+      res.status(500).json({
+        message: "Error deleting user",
+      });
+    }
+    next(error);
+  }
+};
+
+export const UPDATE_USER = async (req, res, next) => {
+  try {
+    const token = COOKIES.get(req, "token") || req.headers.cookie;
+    const payload = JWTTOKEN.verify(token, process.env.JWT_SECRET);
+    req.user = {
+      id: payload.id,
+      email: payload.email,
+      role: payload.role,
+    };
+
+    if (req.user.role != "admin") {
+      LOGGER.error("Unauthorized");
+      res.status(403).json({
+        message: "Unauthorized",
+      });
+      return;
+    }
+
+    return await UPDATE_USER_BY_ID(req.params.id, req.body);
+  } catch (error) {
+    if (error.message == "User not found") {
+      LOGGER.error("User not found");
+      res.status(404).json({
+        message: "User not found",
+      });
+    } else {
+      LOGGER.error("Error updating user:", error);
+      res.status(500).json({
+        message: "Error updating user",
+      });
+    }
+    next(error);
   }
 };
