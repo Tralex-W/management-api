@@ -10,7 +10,5 @@ const ROUTER = express.Router();
 
 ROUTER.get("/", GET_USERS);
 ROUTER.get("/:id", GET_USER);
-ROUTER.put("/:id", UPDATE_USER);
-ROUTER.delete("/:id", DELETE_USER);
 
 export default ROUTER;
