@@ -5,6 +5,7 @@ import morgan from "morgan";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.routes.js";
+import userRoutes from "./routes/user.routes.js";
 
 const APP = express();
 
@@ -20,6 +21,7 @@ APP.use(
 
 //routes
 APP.use("/api/auth", authRoutes);
+APP.use("/api/user", userRoutes);
 
 //endpoints
 APP.get("/", (req, res) => {

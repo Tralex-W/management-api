@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import { DB } from "../config/database.js";
 import { USERS } from "../models/user.model.js";
 import { eq } from "drizzle-orm";
-import { JWTTOKEN } from "../utils/jwt.js";
 
 export const HASHPASSWORD = async (password) => {
   try {
@@ -31,8 +30,8 @@ export const CREATE_USER = async (name, email, password, role = "user") => {
       .where(eq(USERS.email, email))
       .limit(1);
 
-    //error: When a user already exisits, an internal server error is thrown without any message (user already exists)
     if (EXISTING_USER.length > 0) {
+      LOGGER.error("User with this email already exists");
       throw new Error("User with this email already exists");
     }
 
